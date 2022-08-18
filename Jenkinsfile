@@ -1,19 +1,14 @@
 pipeline {
   agent any
-  tools {
-    maven 'M2_HOME' 
-  }
   stages {
-    stage ('Build') {
+    stage('Build') {
       steps {
-        sh 'mvn clean package'
+        sh '"mvn" -Dmaven.test.failure.ignore clean install'
       }
     }
-    stage ('Deploy') {
-      steps {
-        script {
-          deploy adapters: [tomcat8(path: '', url: 'http://3.111.168.155:8080/')], contextPath: '/pipeline', onFailure: false, war: 'webapp/target/*.war' 
-        }
+    stage('Deploy') {
+      steps {   
+         deploy adapters: [tomcat9(credentialsId: 'tomcat-credentials', url: "${tomcatServerUrl}")], contextPath: 'pipeline-java-app', war: '**/*.war'
       }
     }
   }
