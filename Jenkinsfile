@@ -17,12 +17,14 @@ pipeline{
 //      sh "${scannerHome}/bin/sonar-scanner"
         sh "mvn sonar:sonar"
     }    
+	}
+	}
        stage('Build'){
             steps{
                 sh 'mvn clean package'
             }
          }
-	 stage('Test'){
+	  stage('Test'){
             post {
                 // If Maven was able to run the tests, even if some of the test
                 // failed, record the test results and archive the jar file.
@@ -32,8 +34,8 @@ pipeline{
             }
          }
         
-        }
-        }
+        
+        
 	stage('Deploy') {
       steps {   
          deploy adapters: [tomcat8(credentialsId: 'deploy', path: '', url: 'http://3.110.134.168:8080')], contextPath: null, war: '**/**.war'
