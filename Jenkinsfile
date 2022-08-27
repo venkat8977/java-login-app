@@ -1,6 +1,6 @@
 pipeline{
     agent any 
-	any tools { maven 'Apache Maven 3.8.6' }
+	any tools { maven 'Maven 3.8.6' }
     environment {
         PATH = "$PATH:/opt/maven/bin"
     }
