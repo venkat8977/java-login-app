@@ -31,7 +31,7 @@ pipeline{
         /* This builds the actual image; synonymous to
          * docker build on the command line */
 
-        	docker.build("getintodevops/hellonode")
+        	docker.build
 		 }
     }
         
