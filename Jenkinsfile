@@ -26,6 +26,8 @@ pipeline{
                 }
             }
          }
+	 stage('Docker Build') { 
+	steps { script { docker.build("vikram_rat/hello-world:${TAG}") } } }
         
         
 	//stage('Deploy') {
