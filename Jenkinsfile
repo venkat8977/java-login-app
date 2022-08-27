@@ -26,9 +26,13 @@ pipeline{
                 }
             }
          }
-	 stage('Docker Build') { 
-	steps { script { docker.build("vikram_rat/hello-world:${TAG}") } } }
-        
+	 stage('Building image') {
+      		steps{
+        	  script {
+          			dockerImage = docker.build registry
+        }
+      }
+    }
         
 	//stage('Deploy') {
       //steps {   
