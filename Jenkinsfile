@@ -9,11 +9,11 @@ pipeline{
                 git 'https://github.com/vikramDevPrac/java-login-app.git'
             }
          }
-       stage('Build'){
-            steps{
-                sh 'mvn clean package'
-            }
-         }
+       stage('Build') {
+      steps {
+        sh '"mvn" -Dmaven.test.failure.ignore clean install'
+      	}
+    	}
 	stage('Test'){
 		steps{
                 sh 'mvn test'
