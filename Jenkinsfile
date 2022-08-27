@@ -1,5 +1,5 @@
 pipeline{
-    agent any tools { maven 'Maven 3.8.6' }
+    agent any 
     environment {
         PATH = "$PATH:/opt/maven/bin"
     }
