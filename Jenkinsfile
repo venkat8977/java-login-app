@@ -14,18 +14,7 @@ pipeline{
         sh '"mvn" -Dmaven.test.failure.ignore clean install'
       	}
     	}
-	stage('Test'){
-		steps{
-                sh 'mvn test'
-                 }
-            post {
-                // If Maven was able to run the tests, even if some of the test
-                // failed, record the test results and archive the jar file.
-                success {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                }
-            }
-         }
+	
 	 stage('Build image') {
 		 steps {
         /* This builds the actual image; synonymous to
