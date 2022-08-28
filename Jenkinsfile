@@ -16,7 +16,7 @@ pipeline{
     	}
 	
 	 stage('Build image') {
-		 agent root
+		 agent 
 		 steps {
         
         	sh "docker build . -t devops-image" 
