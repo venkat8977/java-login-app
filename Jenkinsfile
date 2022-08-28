@@ -19,7 +19,7 @@ pipeline{
 		 steps {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
-
+		sh "mv  /var/root/imp_docs/* /lib/jenkins/workspace/4th_pipeline/target"
         	sh "docker build . -t devops-image" 
 		 }
     }
