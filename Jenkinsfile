@@ -16,12 +16,12 @@ pipeline{
     	}
 	
 	 stage('Build image') {
-		 agent 
+		 agent any 
 		 steps {
         
-        	sh "docker build . -t devops-image" 
+        	   sh "docker build . -t devops-image" 
 		 }
-    }
+    		}
         
 	//stage('Deploy') {
       //steps {   
