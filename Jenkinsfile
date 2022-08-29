@@ -10,24 +10,18 @@ pipeline{
             }
          }
        stage('Build') {
-      steps {
-        sh '"mvn" -Dmaven.test.failure.ignore clean install'
-      	}
+           steps {
+        	sh 'mvn clean package' 
+      		}
     	}
 	
-	 stage('Build image') {
+	stage('Build image') {
 		 agent any 
 		 steps {
         
-        	   sh "docker build . -t devops-image" 
+        	   sh "docker build . -t test-image" 
 		 }
     		}
-        
-	//stage('Deploy') {
-      //steps {   
-      //   deploy adapters: [tomcat8(credentialsId: 'deploy', path: '', url: 'http://3.110.134.168:8080')], contextPath: null, war: '**/**.war'
-      //}
-    //}
        
     }
 }
