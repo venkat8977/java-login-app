@@ -1,27 +1,53 @@
-pipeline{
-    agent any 
+pipeline {
+    agent any
     environment {
-        PATH = "$PATH:/opt/maven/bin"
+        AWS_ACCOUNT_ID="503593019758"
+        AWS_DEFAULT_REGION="ap-south-a" 
+        IMAGE_REPO_NAME="jenkins-pipeline-build-demo"
+        IMAGE_TAG="latest"
+        REPOSITORY_URI = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}"
+		PATH = "$PATH:/opt/maven/bin"
     }
-    stages{
-       stage('GetCode'){
+   
+    stages {
+        
+         stage('Logging into AWS ECR') {
+            steps {
+                script {
+                sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
+                }
+                 
+            }
+        }
+        
+        stage('GetCode'){
             steps{
                 git 'https://github.com/vikramDevPrac/java-login-app.git'
             }
          }
-       stage('Build') {
+		stage('Build') {
            steps {
         	sh 'mvn clean package' 
       		}
     	}
-	
-	stage('Build image') {
-		 agent any 
-		 steps {
-        
-        	   sh "docker build . -t test-image" 
-		 }
-    		}
-       
+  
+    // Building Docker images
+    stage('Building image') {
+      steps{
+        script {
+          dockerImage = docker.build "${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+        }
+      }
+    }
+   
+    // Uploading Docker images into AWS ECR
+    stage('Pushing to ECR') {
+     steps{  
+         script {
+                sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:$IMAGE_TAG"
+                sh "docker push ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}"
+         }
+        }
+      }
     }
 }
