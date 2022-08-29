@@ -10,6 +10,6 @@ RUN mv /usr/local/tomcat/webapps.dist/ webapps
 
 COPY ./target/dptweb-1.0.war /usr/local/tomcat/webapps/
 
-EXPOSE 9090
+EXPOSE 8080
 
 CMD ["catalina.sh", "run"]
