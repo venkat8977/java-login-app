@@ -1,7 +1,7 @@
 pipeline {
     agent any
     environment {
-        AWS_ACCOUNT_ID="503593019758"
+        AWS_ACCOUNT_ID="584525676656"
         AWS_DEFAULT_REGION="ap-south-1" 
         IMAGE_REPO_NAME="jenkins-pipeline-build-demo"
         IMAGE_TAG="latest"
@@ -22,7 +22,7 @@ pipeline {
         
         stage('GetCode'){
             steps{
-                git 'https://github.com/vikramDevPrac/java-login-app.git'
+                git 'https://github.com/venkat8977/java-login-app.git'
             }
          }
 		stage('Build') {
