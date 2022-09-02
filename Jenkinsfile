@@ -49,5 +49,12 @@ pipeline {
          }
         }
       }
+	    stage('Deploy'){
+            steps {
+                sh 'aws eks update-kubeconfig --region ap-south-1 --name demo-eks'
+                 sh '~/bin/kubectl apply -f deployment.yml'
+                }
+
+        }   
     }
 }
