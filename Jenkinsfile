@@ -22,7 +22,7 @@ pipeline {
         
         stage('GetCode'){
             steps{
-                git 'https://github.com/vikramDevPrac/java-login-app.git'
+                git 'https://github.com/venkat8977/java-login-app.git'
             }
          }
 		stage('Build') {
