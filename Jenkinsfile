@@ -22,7 +22,7 @@ pipeline {
         
         stage('GetCode'){
             steps{
-                git 'https://github.com/venkat8977/java-login-app.git'
+                git 'https://github.com/vikramDevPrac/java-login-app.git'
             }
          }
 		stage('Build') {
@@ -49,16 +49,29 @@ pipeline {
          }
         }
       }
-	    stage('Deploy'){
-            steps {
-		    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
-                     credentialsId: 'aws-credentials',
-                     accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-	             secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){
-                sh 'aws eks update-kubeconfig --region ap-south-1 --name demo-eks'
-                 sh '~/bin/kubectl apply -f deployment.yml'
-		    }
-	    }
-        }   
+	  
+	stage("Deploy to EKS"){
+      steps{
+	  
+		withKubeConfig(caCertificate: '', clusterName: '', contextName: '', credentialsId: 'K8S', namespace: '', serverUrl: '') {
+          		sh '''if /var/lib/jenkins/bin/kubectl get deploy | grep java-login-app
+            		then
+            		/var/lib/jenkins/bin/kubectl set image deployment jenkins-pipeline-build-demo java-app=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}
+            		/var/lib/jenkins/bin/kubectl rollout restart deployment java-login-app
+            		else
+		    	/var/lib/jenkins/bin/kubectl apply -f deployment.yaml
+            		fi'''
+			}
+			
+		}
+      }
+    
+    stage("Wait for Deployments") {
+      steps {
+        timeout(time: 2, unit: 'MINUTES') {
+          sh '/var/lib/jenkins/bin/kubectl get svc'
+        }
+      }
+    }  
     }
 }
