@@ -59,7 +59,7 @@ pipeline {
             		/var/lib/jenkins/bin/kubectl set image deployment jenkins-pipeline-build-demo java-app=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_REPO_NAME}:${IMAGE_TAG}
             		/var/lib/jenkins/bin/kubectl rollout restart deployment java-login-app
             		else
-		    	/var/lib/jenkins/bin/kubectl apply -f deployment.yaml
+		    	/var/lib/jenkins/bin/kubectl apply -f deployment.yml
             		fi'''
 			}
 			
